@@ -41,7 +41,7 @@ module.exports = {
             userData.password = await bcrypt.hash(userData.password, saltRounds);
 
             const user = await userService.registerUser(userData);
-            res.status(201).json({ message: 'User registered successfully', user });
+            res.status(200).json({ message: 'User registered successfully', data:user, status:true });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: error.message });

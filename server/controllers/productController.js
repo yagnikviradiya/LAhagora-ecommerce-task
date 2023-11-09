@@ -43,7 +43,7 @@ module.exports = {
                 product = await productService.updateProduct(productId, reqData);
             }
 
-            res.status(201).json({ message: 'Product added/updated successfully', product });
+            res.status(200).json({ message: 'Product added/updated successfully',data: product, status:true});
         } catch (error) {
 
             // If there's an error, check if an image file was uploaded and delete it
@@ -62,7 +62,7 @@ module.exports = {
     getProductsList: async (req, res) => {
         try {
             const products = await productService.getProductsList(req?.user?.isStoreOwner, req?.user?.userId);
-            res.json(products);
+            res.json({data: products, status:true});
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Failed to retrieve the product list' });
@@ -82,7 +82,7 @@ module.exports = {
                 return res.status(404).json({ message: 'Product not found' });
             }
 
-            res.status(404).json({ message: 'Product fetched successfully', product })
+            res.status(200).json({ message: 'Product fetched successfully', product })
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: error.message });
@@ -103,7 +103,7 @@ module.exports = {
                 return res.status(404).json({ message: 'Product not found' });
             }
 
-            res.json({ message: 'Product removed successfully', product });
+            res.status(200).json({ message: 'Product removed successfully', data:product });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: error.message });
