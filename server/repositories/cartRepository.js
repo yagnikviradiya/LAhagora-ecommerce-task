@@ -67,15 +67,16 @@ module.exports = {
                 user.cart = user.cart.filter((product) => product?.product !== reqProductId)
             } else {
                 user.cart = user.cart.map((product) => {
-                    if (product.quantity == 1) {
+                    if(product?.product==reqProductId)
+                    product.quantity -= 1;
+                    if (product.quantity <=0) {
                         return null
                     }
-                    product.quantity -= 1
+                    
                     return product;
                 })
                 productDoc.quantity += 1
             }
-            console.log(user.cart.filter((product) => (product !== null)), 'user.cart.filter((product) => product !== null)');
             user.cart = user.cart.filter((product) => product !== null)
             await productDoc.save();
             await user.save();
@@ -87,7 +88,6 @@ module.exports = {
 
     clearCart: async (userId) => {
         try {
-            console.log(userId, 'userId');
             const user = await User.findOne({ _id: userId });
             if (!user) {
                 throw new Error('User not found');
@@ -110,7 +110,6 @@ module.exports = {
             if (!cart?.length)
                 throw new Error('Cart is empty');
             const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-            console.log(totalPrice);
             let cartData = { cart, totalPrice }
             return cartData;
         } catch (error) {

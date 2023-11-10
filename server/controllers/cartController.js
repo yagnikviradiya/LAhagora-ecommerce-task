@@ -19,7 +19,7 @@ module.exports = {
         try {
             const userId = req.user.userId;
             const productId = req?.params?.productId;
-
+console.log(productId,'productId');
             const cart = await cartService.removeFromCart(userId, productId);
 
             res.json({ status: true, data: cart });

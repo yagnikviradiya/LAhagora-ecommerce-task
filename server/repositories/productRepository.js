@@ -11,7 +11,7 @@ module.exports = {
     },
 
     getProductByOwnerId: async (ownerId) => {
-        return await Product.findOne({ owner: ownerId, isDeleted: false });
+        return await Product.find({ owner: ownerId, isDeleted: false });
     },
 
     getProductByName: async (productName, userId) => {

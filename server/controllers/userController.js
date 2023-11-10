@@ -11,9 +11,9 @@ const userSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
     phone: Joi.string(),
-    country: Joi.string(),
+    country: Joi.allow(),
     isStoreOwner: Joi.boolean(),
-    storeName: Joi.string(),
+    storeName: Joi.allow(),
 });
 
 const loginSchema = Joi.object({
@@ -41,7 +41,7 @@ module.exports = {
             userData.password = await bcrypt.hash(userData.password, saltRounds);
 
             const user = await userService.registerUser(userData);
-            res.status(200).json({ message: 'User registered successfully', data:user, status:true });
+            res.status(200).json({ message: 'User registered successfully', data: user, status: true });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: error.message });
@@ -74,8 +74,8 @@ module.exports = {
 
             // Generate and send an authentication token (JWT)
             const token = jwt.sign({ userId: user._id, isStoreOwner: user.isStoreOwner }, process.env.SECRET_KEY);
-
-            res.status(200).json({ message: 'Login successful', token });
+            const roal = user?.isStoreOwner ? "storeOwner" : "customer"
+            res.status(200).json({ message: 'Login successful', token, roal });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Login failed' });
